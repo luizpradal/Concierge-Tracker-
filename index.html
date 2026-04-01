@@ -97,7 +97,6 @@ nav {
   text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
-  /* 44px touch target */
   display: -webkit-inline-flex;
   display: inline-flex;
   -webkit-align-items: center;
@@ -105,7 +104,11 @@ nav {
   height: var(--nav-h);
   -webkit-user-select: none;
   user-select: none;
+  border-bottom: 1.5px solid transparent;
+  -webkit-transition: color .15s, border-color .15s;
+  transition: color .15s, border-color .15s;
 }
+.nav-links a.nav-active { color: var(--gold); border-bottom-color: var(--gold-bd); }
 
 /* ── HERO ── */
 .hero {
@@ -656,6 +659,169 @@ footer {
   .btn:hover { border-color: var(--border3); color: var(--text); }
   .s-dot:hover { border-color: var(--border3); }
 }
+
+/* ══════════════════════════════════
+   PROCESS MAP VIEW
+   ══════════════════════════════════ */
+#view-map { padding-bottom: calc(48px + var(--safe-b)); }
+
+.map-hero {
+  border-bottom: 1px solid var(--border);
+  padding: 40px 20px 28px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.map-hero h2 { font-family: var(--font); font-size: clamp(24px,4vw,40px); font-weight: 400; color: var(--text); margin-bottom: 8px; }
+.map-hero p  { font-size: 12px; color: var(--muted); }
+
+.map-legend {
+  display: -webkit-flex; display: flex; gap: 18px; flex-wrap: wrap;
+  -webkit-align-items: center; align-items: center;
+  padding: 12px 20px; border-bottom: 1px solid var(--border); max-width: 860px; margin: 0 auto;
+}
+.ml-item { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+.ml-sw { width: 12px; height: 12px; border: 1px solid; flex-shrink: 0; }
+.ml-sw.d { background: var(--bg2); border-color: var(--border2); }
+.ml-sw.g { background: var(--gold-bg); border-color: var(--gold-bd); }
+.ml-sw.t { background: var(--teal-bg); border-color: var(--teal-bd); }
+
+.mp-journey {
+  max-width: 860px; margin: 0 auto;
+  padding: 28px 20px 0;
+}
+
+.mp-group-label {
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: baseline; align-items: baseline;
+  gap: 14px; padding: 6px 0 14px 44px; margin-top: 6px;
+}
+.mp-gl-num  { font-family: var(--mono); font-size: 10px; color: var(--faint); flex-shrink: 0; }
+.mp-gl-text { font-size: 10px; letter-spacing: .10em; text-transform: uppercase; color: var(--faint); }
+
+.mp-row {
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: stretch; align-items: stretch;
+}
+
+.mp-spine {
+  width: 44px; flex-shrink: 0;
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-align-items: center; align-items: center;
+}
+
+.mp-dot {
+  width: 26px; height: 26px; border: 1px solid var(--border2);
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: center; align-items: center;
+  -webkit-justify-content: center; justify-content: center;
+  font-family: var(--mono); font-size: 9px; color: var(--faint);
+  background: var(--bg); flex-shrink: 0; z-index: 2;
+  cursor: pointer; touch-action: manipulation;
+  -webkit-transition: all .2s; transition: all .2s;
+  -webkit-user-select: none; user-select: none;
+}
+.mp-dot.gold { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+.mp-dot.teal { border-color: var(--teal-bd); color: var(--teal); background: var(--teal-bg); }
+.mp-dot.mp-active { box-shadow: 0 0 0 3px rgba(255,255,255,0.05); }
+.mp-dot.gold.mp-active { box-shadow: 0 0 0 3px rgba(201,169,110,0.15); }
+.mp-dot.teal.mp-active { box-shadow: 0 0 0 3px rgba(110,201,180,0.15); }
+
+.mp-line {
+  flex: 1; width: 1px; background: var(--border); min-height: 12px;
+  position: relative; overflow: hidden;
+}
+.mp-line::after {
+  content: ''; position: absolute; top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: -webkit-linear-gradient(top, transparent, var(--gold) 50%, transparent);
+  background: linear-gradient(to bottom, transparent, var(--gold) 50%, transparent);
+  -webkit-animation: mpFlow 3s linear infinite; animation: mpFlow 3s linear infinite;
+  opacity: 0.45;
+}
+.mp-line.mp-sep { background: rgba(201,169,110,0.15); min-height: 24px; }
+.mp-line.mp-sep::after { opacity: 0.8; }
+
+@-webkit-keyframes mpFlow { to { top: 100%; } }
+@keyframes mpFlow { to { top: 100%; } }
+
+.mp-card {
+  flex: 1; min-width: 0;
+  border: 1px solid var(--border2); background: var(--bg2);
+  margin: 0 0 10px 12px; padding: 15px 16px 13px;
+  cursor: pointer; touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-transition: border-color .2s; transition: border-color .2s;
+}
+.mp-card.gold { background: var(--gold-bg); border-color: var(--gold-bd); }
+.mp-card.teal { background: var(--teal-bg); border-color: var(--teal-bd); }
+.mp-card.mp-active:not(.gold):not(.teal) { border-color: var(--border3); }
+.mp-card.gold.mp-active { border-color: var(--gold); }
+.mp-card.teal.mp-active { border-color: var(--teal); }
+
+.mp-c-header {
+  display: -webkit-flex; display: flex;
+  -webkit-align-items: flex-start; align-items: flex-start;
+  -webkit-justify-content: space-between; justify-content: space-between;
+  gap: 10px; margin-bottom: 6px;
+}
+.mp-c-meta { flex: 1; min-width: 0; }
+.mp-c-num   { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-bottom: 3px; }
+.mp-c-title { font-family: var(--font); font-size: clamp(14px,2vw,17px); color: var(--text); line-height: 1.25; }
+.mp-c-right {
+  display: -webkit-flex; display: flex;
+  -webkit-flex-direction: column; flex-direction: column;
+  -webkit-align-items: flex-end; align-items: flex-end;
+  gap: 5px; flex-shrink: 0;
+}
+.mp-c-tag {
+  font-size: 9px; letter-spacing: .07em; text-transform: uppercase;
+  padding: 2px 7px; border: 1px solid var(--border2); color: var(--faint);
+}
+.mp-card.gold .mp-c-tag { border-color: var(--gold-bd); color: var(--gold); }
+.mp-card.teal .mp-c-tag { border-color: var(--teal-bd); color: var(--teal); }
+.mp-c-time { font-family: var(--mono); font-size: 9px; color: var(--faint); }
+.mp-c-chev {
+  font-size: 9px; color: var(--faint);
+  -webkit-transition: -webkit-transform .2s; transition: transform .2s;
+}
+.mp-card.mp-active .mp-c-chev { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+
+.mp-c-sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.4; }
+
+.mp-c-detail {
+  max-height: 0; overflow: hidden;
+  -webkit-transition: max-height .35s ease; transition: max-height .35s ease;
+}
+.mp-card.mp-active .mp-c-detail { max-height: 700px; }
+.mp-c-detail-inner { border-top: 1px solid var(--border); padding-top: 12px; }
+
+.mp-c-detail ul { list-style: none; }
+.mp-c-detail li {
+  font-size: 13px; color: var(--muted);
+  padding: 4px 0 4px 14px; position: relative; line-height: 1.5;
+  border-bottom: 1px solid var(--border);
+}
+.mp-c-detail li:last-child { border-bottom: none; }
+.mp-c-detail li::before { content: '—'; position: absolute; left: 0; color: var(--faint); }
+
+.mp-fork-row { display: -webkit-flex; display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.mp-fp {
+  font-size: 11px; padding: 4px 10px;
+  border: 1px solid var(--border2); color: var(--faint); background: var(--bg3);
+}
+.mp-fp.yes { border-color: var(--teal-bd); color: var(--teal); }
+.mp-fp.no  { border-color: var(--gold-bd); color: var(--gold); }
+
+.mp-c-hint {
+  padding-top: 8px; font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--faint);
+  -webkit-transition: color .2s; transition: color .2s;
+}
+.mp-card.mp-active .mp-c-hint { display: none; }
+
 </style>
 </head>
 <body>
@@ -663,8 +829,9 @@ footer {
 <nav>
   <div class="nav-brand"><span>No doubts. No Regrets.</span></div>
   <div class="nav-links">
-    <a href="#" onclick="goList();return false;">Clients</a>
-    <a href="#" onclick="goList();showAddForm();return false;">+ Add</a>
+    <a href="#" id="nav-clients" onclick="goList();return false;" class="nav-active">Clients</a>
+    <a href="#" id="nav-map"     onclick="goMap();return false;">Process map</a>
+    <a href="#" id="nav-add"     onclick="goList();showAddForm();return false;">+ Add</a>
   </div>
 </nav>
 
@@ -746,6 +913,20 @@ footer {
 
     <div class="journey" id="d-journey"></div>
   </div>
+</div>
+
+<!-- PROCESS MAP VIEW -->
+<div id="view-map" class="view">
+  <div class="map-hero">
+    <h2>End-to-End<br>Client Journey.</h2>
+    <p>20 stages &middot; Tap any stage to expand &middot; No doubts. No regrets.</p>
+  </div>
+  <div class="map-legend">
+    <div class="ml-item"><div class="ml-sw d"></div>Standard stage</div>
+    <div class="ml-item"><div class="ml-sw g"></div>Key / financial milestone</div>
+    <div class="ml-item"><div class="ml-sw t"></div>Completion / retention</div>
+  </div>
+  <div class="mp-journey" id="mp-journey"></div>
 </div>
 
 <footer>
@@ -1069,7 +1250,136 @@ function saveNote(sid,val){
   if(f){f.classList.add('show');setTimeout(function(){f.classList.remove('show');},1800);}
 }
 
+
+/* ── PROCESS MAP ── */
+var MP_STAGES=[
+  {num:'01',title:'New Lead',                            sub:'Journey begins',                                    style:'d',tag:'Entry',    time:null,      b:['A new enquiry enters the design concierge process'],                                                                                                                                                                           f:[['Suitable','yes','Progress to intake form'],['Not suitable','no','Pass to traditional NR booking process']]},
+  {num:'02',title:'Intake Form',                         sub:'Online quiz · Client self-serve',               style:'d',tag:'Online',   time:null,      b:['Client completes online quiz: reference images, size, placement, subject and meaning','Recorded ahead of the consultation call'],                                                                                             f:[]},
+  {num:'03',title:'Auto-Setup Call',                     sub:'Automatic · Under 1 day',                       style:'d',tag:'< 1 day', time:'< 1 day', b:['Consultation call automatically scheduled within 1 day of form completion'],                                                                                                                                                f:[]},
+  {num:'04',title:'30-Min Initial Call',                 sub:'Senior sales consultant',                           style:'d',tag:'Triage',   time:'< 3 days',b:['30-min call with senior sales consultant completed','Enquiry assessed: is it suitable for the design process?','Decision confirmed and logged'],                                                                             f:[['Not suitable','no','Pass to traditional NR booking process'],['Suitable','yes','Proceed to deposit']]},
+  {num:'05',title:'Pay Deposit & Book',                  sub:'$250 · Book one-hour session',                  style:'g',tag:'Finance',  time:null,      b:['$250 deposit received (deducted from final design price)','One-hour session booked'],                                                                                                                                       f:[]},
+  {num:'06',title:'Produce Concept Design',              sub:'Select artist · Art Director sign-off · 3 days',style:'g',tag:'Design',time:'3 days', b:['Artist selected and matched to the brief','Concept design produced','Art Director sign-off obtained','Designer edits & Concierge sign-off completed'],                                                                    f:[['Artist changes needed','no','Redraft before presenting'],['Artist happy','yes','Proceed to in-person consultation']]},
+  {num:'07',title:'One-Hour In-Person Consultation',     sub:'Art Director · Key stage · 7 days',         style:'g',tag:'Key',      time:'7 days', b:['Fact-finding & qualification: client and ideas confirmed suitable and feasible','Active listening; testimonials presented; full process illustrated','Photobooth — placement & full-body photos for AI avatar','Body measurements taken','Personal style and visual vibe established','App induction completed','Payment plans discussed; remaining $2,250 collected'],f:[]},
+  {num:'08',title:'Designer Edits & Sign-off',           sub:'Internal review',                                   style:'d',tag:'Review',   time:null,      b:['Designer edits completed following consultation feedback','Concierge sign-off obtained'],                                                                                                                                     f:[]},
+  {num:'09',title:'First Draft Presentation',            sub:'30-min video · Overlaid on placement',          style:'d',tag:'30-min',  time:null,      b:['First draft presented overlaid onto a picture of the placement','Design discussed; amendments ascertained'],                                                                                                                 f:[]},
+  {num:'10',title:'Amendments & Sign-off',               sub:'Obtain amendments · 3 days',                    style:'d',tag:'Iteration',time:'3 days', b:['Additional amendments obtained from client','Designer edits completed','Concierge sign-off obtained','Artist changes checked — redraft loop if needed'],                                                               f:[['Proceed','yes','Present developed design in app'],['Redraft','no','Loop back to designer']]},
+  {num:'11',title:'App Presentation',                    sub:'Developed concept on placement',                    style:'d',tag:'App',      time:null,      b:['Client redirected to app','Further developed design presented in app','Design shown on placement'],                                                                                                                          f:[]},
+  {num:'12',title:'30-Min Video: Final Design',          sub:'7 days · Final amendments',                     style:'d',tag:'7 days',  time:'7 days',  b:['30-min video consultation to present final design','Final amendments and thoughts obtained','Final design shown in situ on AI avatar and on placement','Presented in different contexts with different outfits'],            f:[]},
+  {num:'13',title:'Customisable Elements & Finishes',    sub:'3 options for client to select',                    style:'d',tag:'Design',   time:null,      b:['Additional customisable elements confirmed','3 options & finishes provided for client selection','Client selection recorded'],                                                                                              f:[]},
+  {num:'14',title:'Designer Edits & Concierge Sign-off', sub:'Final internal review · 3 days',               style:'d',tag:'Review',  time:'3 days',  b:['Final designer edits completed','Concierge sign-off obtained'],                                                                                                                                                             f:[]},
+  {num:'15',title:'Is Client Ready to Book?',            sub:'Decision point',                                   style:'d',tag:'Decision', time:null,      b:['Client has reviewed the final design','Decision confirmed and recorded'],                                                                                                                                                   f:[['Not ready','no','30-min video with Art Director — amendments — loop'],['Ready','yes','Proceed to produce temporary tattoo']]},
+  {num:'16',title:'Produce Temporary Tattoo',            sub:'Final amendments in app · 3 days',              style:'d',tag:'Approval', time:'3 days',  b:['Final amendments session completed in app','Temporary tattoo produced'],                                                                                                                                                   f:[]},
+  {num:'17',title:'In-Person · Artist Introduction',sub:'1-hour consultation · 10-min artist intro',    style:'g',tag:'Key',      time:null,      b:['One-hour consultation in person','Final design shown in situ on avatar and on placement','Presented in different contexts with different outfits','Client introduced to artist — maximum 10 minutes','Final artist sign-off obtained','Designer edits & Concierge final sign-off'],f:[]},
+  {num:'18',title:'Tattoo Day',                          sub:'The appointment',                                   style:'t',tag:'Milestone',time:null,      b:['The appointment — the moment everything has been building toward','Client arrives knowing exactly what they are getting','No doubts. No regrets.'],                                                                    f:[]},
+  {num:'19',title:'Aftercare Check-in',                  sub:'7 days post-tattoo',                                style:'t',tag:'Retention',time:'7 days', b:['7-day check-in to confirm satisfaction and support healing','Testimonials and referrals captured','Request for photograph'],                                                                                                f:[]},
+  {num:'20',title:'New Tattoo Projects?',                sub:'Retention loop · Journey complete',             style:'t',tag:'Loop',     time:null,      b:['Does the client have any new tattoo projects?'],                                                                                                                                                                           f:[['Yes','yes','Loop back to stage 07 — in-person consultation'],['No','no','Journey complete · client retained']]}
+];
+
+var MP_GROUPS=[
+  {label:'Qualification & deposit',range:[0,5]},
+  {label:'Concept & first draft',  range:[5,10]},
+  {label:'Final design & approval',range:[10,15]},
+  {label:'Tattoo day & retention', range:[15,20]}
+];
+var MP_SC={d:'',g:'gold',t:'teal'};
+var mpBuilt=false;
+
+function buildMap(){
+  if(mpBuilt)return;
+  mpBuilt=true;
+  var container=document.getElementById('mp-journey');
+  MP_GROUPS.forEach(function(group,gi){
+    var gl=document.createElement('div');
+    gl.className='mp-group-label';
+    gl.innerHTML='<span class="mp-gl-num">0'+gi+'</span><span class="mp-gl-text">'+group.label+'</span>';
+    container.appendChild(gl);
+    var start=group.range[0],end=group.range[1];
+    for(var i=start;i<end;i++){
+      var s=MP_STAGES[i];
+      var cls=MP_SC[s.style]||'';
+      var isLast=(i===MP_STAGES.length-1);
+      var isGroupLast=(i===end-1);
+      var bullets=s.b.map(function(b){return '<li>'+b+'</li>';}).join('');
+      var forkHTML=s.f.length?'<div class="mp-fork-row">'+s.f.map(function(f){return '<span class="mp-fp '+f[1]+'">'+f[0]+' → '+f[2]+'</span>';}).join('')+'</div>':'';
+      var row=document.createElement('div');
+      row.className='mp-row';
+      row.innerHTML=
+        '<div class="mp-spine">'+
+          '<div class="mp-dot '+cls+'" id="mpdot-'+i+'" onclick="toggleMapStage('+i+')">'+s.num+'</div>'+
+          (!isLast?'<div class="mp-line'+(isGroupLast?' mp-sep':'')+'"></div>':'')+
+        '</div>'+
+        '<div class="mp-card '+cls+'" id="mpcard-'+i+'" onclick="toggleMapStage('+i+')">'+
+          '<div class="mp-c-header">'+
+            '<div class="mp-c-meta">'+
+              '<div class="mp-c-num">Stage '+s.num+'</div>'+
+              '<div class="mp-c-title">'+s.title+'</div>'+
+            '</div>'+
+            '<div class="mp-c-right">'+
+              '<div style="display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;gap:6px">'+
+                '<span class="mp-c-tag">'+s.tag+'</span>'+
+                '<span class="mp-c-chev">&#9654;</span>'+
+              '</div>'+
+              (s.time?'<span class="mp-c-time">'+s.time+'</span>':'')+
+            '</div>'+
+          '</div>'+
+          '<div class="mp-c-sub">'+s.sub+'</div>'+
+          '<div class="mp-c-detail"><div class="mp-c-detail-inner"><ul>'+bullets+'</ul>'+forkHTML+'</div></div>'+
+          '<div class="mp-c-hint">Tap to expand</div>'+
+        '</div>';
+      container.appendChild(row);
+    }
+  });
+}
+
+function toggleMapStage(idx){
+  var card=document.getElementById('mpcard-'+idx);
+  var dot=document.getElementById('mpdot-'+idx);
+  var wasActive=card.classList.contains('mp-active');
+  for(var i=0;i<MP_STAGES.length;i++){
+    var c=document.getElementById('mpcard-'+i);
+    var d=document.getElementById('mpdot-'+i);
+    if(c)c.classList.remove('mp-active');
+    if(d)d.classList.remove('mp-active');
+  }
+  if(!wasActive){
+    card.classList.add('mp-active');
+    dot.classList.add('mp-active');
+    setTimeout(function(){card.scrollIntoView({behavior:'smooth',block:'nearest'});},40);
+  }
+}
+
+function setNavActive(id){
+  var links=['nav-clients','nav-map','nav-add'];
+  links.forEach(function(l){
+    var el=document.getElementById(l);
+    if(el)el.classList.toggle('nav-active',l===id);
+  });
+}
+
+function goMap(){
+  document.getElementById('view-list').classList.remove('active');
+  document.getElementById('view-detail').classList.remove('active');
+  document.getElementById('view-map').classList.add('active');
+  setNavActive('nav-map');
+  window.scrollTo(0,0);
+  buildMap();
+}
+
+var _origGoList=goList;
+goList=function(){
+  document.getElementById('view-map').classList.remove('active');
+  _origGoList();
+  setNavActive('nav-clients');
+};
+var _origOpenClient=openClient;
+openClient=function(id){
+  document.getElementById('view-map').classList.remove('active');
+  _origOpenClient(id);
+  setNavActive('nav-clients');
+};
+
 load();
+setNavActive('nav-clients');
 </script>
 </body>
 </html>
