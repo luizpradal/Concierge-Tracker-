@@ -829,14 +829,14 @@ footer {
 <nav>
   <div class="nav-brand"><span>No Regrets</span>&#8482;</div>
   <div class="nav-links">
-    <a href="#" id="nav-clients" onclick="goList();return false;" class="nav-active">Clients</a>
-    <a href="#" id="nav-map"     onclick="goMap();return false;">Process map</a>
+    <a href="#" id="nav-map"     onclick="goMap();return false;" class="nav-active">Process map</a>
+    <a href="#" id="nav-clients" onclick="goList();return false;">Clients</a>
     <a href="#" id="nav-add"     onclick="goList();showAddForm();return false;">+ Add</a>
   </div>
 </nav>
 
 <!-- LIST VIEW -->
-<div id="view-list" class="view active">
+<div id="view-list" class="view">
   <div class="hero">
     <div class="hero-eyebrow">No doubts. No Regrets.</div>
     <h1>Client Journey<br>Tracker.</h1>
@@ -916,7 +916,7 @@ footer {
 </div>
 
 <!-- PROCESS MAP VIEW -->
-<div id="view-map" class="view">
+<div id="view-map" class="view active">
   <div class="map-hero">
     <h2>End-to-End<br>Client Journey.</h2>
     <p>20 stages &middot; Tap any stage to expand</p>
@@ -1369,17 +1369,17 @@ var _origGoList=goList;
 goList=function(){
   document.getElementById('view-map').classList.remove('active');
   _origGoList();
-  setNavActive('nav-clients');
+  setNavActive('nav-map');
 };
 var _origOpenClient=openClient;
 openClient=function(id){
   document.getElementById('view-map').classList.remove('active');
   _origOpenClient(id);
-  setNavActive('nav-clients');
+  setNavActive('nav-map');
 };
 
 load();
-setNavActive('nav-clients');
+goMap();
 </script>
 </body>
 </html>
