@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>No doubts. No Regrets. — Client Journey Tracker</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0c0c0a;
+  --bg2:     #141412;
+  --bg3:     #1c1c19;
+  --border:  rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --border3: rgba(255,255,255,0.22);
+  --text:    #e5e2d8;
+  --muted:   #8a8880;
+  --faint:   #4a4845;
+  --gold:    #c9a96e;
+  --gold-bg: rgba(201,169,110,0.10);
+  --gold-bd: rgba(201,169,110,0.30);
+  --teal:    #6ec9b4;
+  --teal-bg: rgba(110,201,180,0.08);
+  --teal-bd: rgba(110,201,180,0.28);
+  --red:     #c96e6e;
+  --red-bg:  rgba(201,110,110,0.10);
+  --red-bd:  rgba(201,110,110,0.30);
+  --font:    'Georgia', 'Times New Roman', serif;
+  --mono:    'Courier New', monospace;
+  --sans:    -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --nav-h:   48px;
+  --safe-l:  env(safe-area-inset-left, 0px);
+  --safe-r:  env(safe-area-inset-right, 0px);
+  --safe-b:  env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Remove tap highlight globally */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ── NAV ── */
+nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  height: var(--nav-h);
+  padding: 0 max(20px, calc(16px + var(--safe-l))) 0 max(20px, calc(16px + var(--safe-l)));
+  padding-right: max(20px, calc(16px + var(--safe-r)));
+}
+.nav-brand {
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  margin-right: 12px;
+}
+.nav-brand span { color: var(--text); }
+.nav-links { display: -webkit-flex; display: flex; gap: 20px; flex-shrink: 0; }
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  /* 44px touch target */
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  height: var(--nav-h);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ── HERO ── */
+.hero {
+  border-bottom: 1px solid var(--border);
+  padding: 48px 20px 36px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--font);
+  font-size: clamp(32px, 8vw, 60px);
+  font-weight: 400;
+  line-height: 1.06;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.hero-sub { font-size: 12px; color: var(--muted); }
+.hero-sub span { color: var(--faint); margin: 0 6px; }
+
+/* ── SHELL ── */
+.shell {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px calc(48px + var(--safe-b));
+}
+
+/* ── SECTION HEADER ── */
+.sec-head {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: baseline;
+  align-items: baseline;
+  gap: 16px;
+  padding: 28px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.sec-num { font-family: var(--mono); font-size: 11px; color: var(--faint); flex-shrink: 0; }
+.sec-inner { flex: 1; }
+.sec-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.sec-head h2 { font-family: var(--font); font-size: 20px; font-weight: 400; color: var(--text); }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── STAT STRIP ── */
+.stat-strip {
+  display: -webkit-flex;
+  display: flex;
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.stat-cell {
+  flex: 1;
+  padding: 16px 14px;
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-val { font-family: var(--font); font-size: 28px; color: var(--text); line-height: 1; margin-bottom: 5px; }
+.stat-lbl { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+
+/* ── ADD FORM ── */
+.add-form {
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.add-form-title {
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 5px;
+}
+
+/* CRITICAL iOS FIX: font-size must be ≥16px to prevent auto-zoom on focus */
+input[type=text],
+input[type=date],
+textarea {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.4;
+  padding: 10px 12px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  transition: border-color .15s;
+}
+input[type=text]:focus,
+input[type=date]:focus,
+textarea:focus { border-color: var(--border3); }
+
+/* iOS date picker */
+input[type=date] { min-height: 44px; }
+input[type=date]::-webkit-calendar-picker-indicator {
+  filter: invert(0.4);
+  cursor: pointer;
+  padding: 4px;
+}
+
+textarea {
+  min-height: 72px;
+  resize: none; /* Avoid resize handle issues on iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+.form-actions { display: -webkit-flex; display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  /* Min 44px touch target height */
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+}
+/* Use active instead of hover for mobile */
+.btn:hover,
+.btn:active { border-color: var(--border3); color: var(--text); }
+.btn.primary { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+.btn.primary:hover, .btn.primary:active { background: rgba(201,169,110,0.18); }
+.btn.danger  { border-color: var(--red-bd);  color: var(--red);  background: var(--red-bg); }
+.btn.danger:hover, .btn.danger:active  { background: rgba(201,110,110,0.18); }
+
+/* ── CLIENT LIST ── */
+.list-sep {
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.client-list { margin-bottom: 28px; }
+
+.client-row {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 12px;
+  /* Min 44px touch target */
+  min-height: 60px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background .12s;
+}
+.client-row:first-child { border-top: 1px solid var(--border); }
+/* Mobile: simple bg highlight, no layout-shifting margin/padding */
+.client-row:active { background: var(--bg2); }
+@media (hover: hover) {
+  .client-row:hover { background: var(--bg2); }
+}
+
+.av {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border2);
+  flex-shrink: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--muted);
+  background: var(--bg2);
+}
+.av.gold { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+.av.teal { border-color: var(--teal-bd); color: var(--teal); background: var(--teal-bg); }
+
+.cl-info { flex: 1; min-width: 0; }
+.cl-name {
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cl-meta { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.cl-right {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.pill {
+  font-size: 10px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--border2);
+  color: var(--faint);
+  white-space: nowrap;
+}
+.pill.gold { border-color: var(--gold-bd); color: var(--gold); }
+.pill.teal { border-color: var(--teal-bd); color: var(--teal); }
+
+.mini-prog-wrap { min-width: 44px; }
+.mini-prog-pct { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-bottom: 4px; }
+.mini-bar { height: 1px; background: var(--border2); }
+.mini-bar-fill { height: 1px; background: var(--gold); transition: width .3s; }
+
+/* ── DETAIL TOPBAR ── */
+.topbar-detail {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0 0;
+}
+
+/* ── DETAIL HERO ── */
+.detail-hero {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.detail-av {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border2);
+  flex-shrink: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--muted);
+  background: var(--bg2);
+}
+.detail-av.gold { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+.detail-av.teal { border-color: var(--teal-bd); color: var(--teal); background: var(--teal-bg); }
+.detail-info { flex: 1; min-width: 0; }
+.detail-name {
+  font-family: var(--font);
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.detail-meta { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.detail-meta span { color: var(--faint); margin: 0 4px; }
+
+/* ── PROGRESS ROW ── */
+.prog-row {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.prog-track { flex: 1; min-width: 80px; height: 1px; background: var(--border2); }
+.prog-fill { height: 1px; background: var(--gold); transition: width .4s; }
+.prog-label { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+.prog-pct   { font-family: var(--mono); font-size: 11px; color: var(--gold); white-space: nowrap; }
+
+/* ── JOURNEY ── */
+.journey { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; }
+.s-block { display: -webkit-flex; display: flex; -webkit-align-items: stretch; align-items: stretch; }
+
+.s-spine {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 36px;
+  flex-shrink: 0;
+}
+.s-dot {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border2);
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--faint);
+  background: var(--bg);
+  cursor: pointer;
+  flex-shrink: 0;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.s-dot.current { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+.s-dot.done    { border-color: var(--teal-bd); color: var(--teal); background: var(--teal-bg); font-size: 11px; }
+
+.s-line { flex: 1; width: 1px; background: var(--border); min-height: 10px; }
+.s-line.done { background: rgba(110,201,180,0.22); }
+
+.s-card {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--border);
+  margin: 0 0 10px 10px;
+  transition: border-color .2s;
+}
+.s-card.current { border-color: var(--gold-bd); }
+.s-card.done    { border-color: rgba(110,201,180,0.22); }
+
+.s-header {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 8px;
+  /* 44px min touch target */
+  min-height: 52px;
+  padding: 10px 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background .12s;
+}
+.s-header:active { background: var(--bg2); }
+@media (hover: hover) { .s-header:hover { background: var(--bg2); } }
+
+.s-meta { flex: 1; min-width: 0; }
+.s-num { font-family: var(--mono); font-size: 10px; color: var(--faint); margin-bottom: 2px; letter-spacing: .03em; }
+.s-title { font-family: var(--font); font-size: 14px; color: var(--text); }
+
+.s-tag {
+  font-size: 9px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid var(--border2);
+  color: var(--faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* Hide on very small screens if needed */
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tag-consult { border-color: rgba(201,169,110,0.20); color: rgba(201,169,110,0.65); }
+.tag-money   { border-color: rgba(110,201,180,0.20); color: rgba(110,201,180,0.65); }
+.tag-design  { border-color: rgba(201,169,110,0.20); color: rgba(201,169,110,0.65); }
+.tag-final   { border-color: rgba(110,201,180,0.20); color: rgba(110,201,180,0.65); }
+.tag-day     { border-color: var(--gold-bd); color: var(--gold); background: var(--gold-bg); }
+
+.chev { font-size: 9px; color: var(--faint); flex-shrink: 0; transition: transform .2s; }
+.chev.open { transform: rotate(90deg); }
+
+.s-body { display: none; padding: 0 12px 14px; border-top: 1px solid var(--border); }
+.s-body.open { display: block; }
+
+/* ── CHECKBOXES ── */
+.check-list { list-style: none; margin: 12px 0 10px; }
+.check-item {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  gap: 10px;
+  /* 44px min touch target */
+  min-height: 44px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.check-item:last-child { border-bottom: none; }
+.check-item input[type=checkbox] {
+  /* Large touch target for iOS */
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--teal);
+  -webkit-appearance: auto;
+  appearance: auto;
+  touch-action: manipulation;
+}
+.check-item label {
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1.5;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.check-item.checked label {
+  color: var(--faint);
+  text-decoration: line-through;
+  -webkit-text-decoration-color: var(--faint);
+  text-decoration-color: var(--faint);
+}
+
+/* ── FORK BLOCKS ── */
+.fork-row { display: -webkit-flex; display: flex; gap: 8px; margin: 8px 0 12px; flex-wrap: wrap; }
+.fork-item {
+  flex: 1;
+  min-width: 140px;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  background: var(--bg2);
+}
+.fork-lbl  { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+.fork-desc { font-size: 12px; color: var(--muted); }
+
+/* ── NOTES ── */
+.notes-lbl {
+  font-size: 10px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 6px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+.saved-flash { color: var(--teal); opacity: 0; transition: opacity .4s; }
+.saved-flash.show { opacity: 1; }
+
+/* ── EMPTY STATE ── */
+.empty {
+  padding: 48px 0;
+  text-align: center;
+  font-family: var(--font);
+  font-size: 16px;
+  color: var(--faint);
+}
+.empty strong { display: block; color: var(--muted); font-weight: 400; margin-bottom: 8px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 20px calc(16px + var(--safe-b));
+  max-width: 860px;
+  margin: 0 auto;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.footer-brand { font-family: var(--font); font-size: 13px; color: var(--faint); }
+.footer-note  { font-size: 11px; color: var(--faint); letter-spacing: .04em; }
+
+/* ── MOBILE BREAKPOINTS ── */
+@media (max-width: 480px) {
+  .hero { padding: 36px 16px 28px; }
+  .shell { padding-left: 16px; padding-right: 16px; }
+  nav { padding-left: max(16px, var(--safe-l)); padding-right: max(16px, var(--safe-r)); }
+  .nav-brand { font-size: 11px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .stat-val { font-size: 22px; }
+  .stat-cell { padding: 14px 10px; }
+  /* Stack client row right section vertically on very small screens */
+  .cl-right { -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: flex-end; align-items: flex-end; gap: 4px; }
+  /* Hide pill on very small, keep progress */
+  .pill { display: none; }
+  /* Shorten s-tag */
+  .s-tag { display: none; }
+  footer { padding-left: 16px; padding-right: 16px; -webkit-flex-direction: column; flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 360px) {
+  .stat-val { font-size: 18px; }
+  .hero h1 { font-size: 28px; }
+}
+
+/* ── DESKTOP-ONLY HOVER REFINEMENTS ── */
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover { color: var(--text); }
+  .btn:hover { border-color: var(--border3); color: var(--text); }
+  .s-dot:hover { border-color: var(--border3); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span>No doubts. No Regrets.</span></div>
+  <div class="nav-links">
+    <a href="#" onclick="goList();return false;">Clients</a>
+    <a href="#" onclick="goList();showAddForm();return false;">+ Add</a>
+  </div>
+</nav>
+
+<!-- LIST VIEW -->
+<div id="view-list" class="view active">
+  <div class="hero">
+    <div class="hero-eyebrow">No doubts. No Regrets.</div>
+    <h1>Client Journey<br>Tracker.</h1>
+    <div class="hero-sub">
+      Bespoke design process<span>&middot;</span>10-stage journey
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="sec-head">
+      <span class="sec-num">00</span>
+      <div class="sec-inner">
+        <div class="sec-label">Overview</div>
+        <h2>Your Clients.</h2>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="stat-val" id="ls-total">0</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-cell"><div class="stat-val" id="ls-active">0</div><div class="stat-lbl">In progress</div></div>
+      <div class="stat-cell"><div class="stat-val" id="ls-complete">0</div><div class="stat-lbl">Complete</div></div>
+    </div>
+
+    <div id="add-form-wrap" style="display:none">
+      <div class="add-form">
+        <div class="add-form-title">New client</div>
+        <div class="form-grid">
+          <div class="field"><label>Full name</label><input type="text" id="inp-name" placeholder="Sarah Mitchell" autocomplete="off" autocorrect="off" autocapitalize="words"></div>
+          <div class="field"><label>Start date</label><input type="date" id="inp-date"></div>
+          <div class="field"><label>Tattoo concept</label><input type="text" id="inp-concept" placeholder="Botanical sleeve" autocomplete="off" autocorrect="off"></div>
+          <div class="field"><label>Placement</label><input type="text" id="inp-placement" placeholder="Left forearm" autocomplete="off" autocorrect="off"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" onclick="addClient()">Add client</button>
+          <button class="btn" onclick="hideAddForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="active-list"></div>
+    <div id="done-list"></div>
+  </div>
+</div>
+
+<!-- DETAIL VIEW -->
+<div id="view-detail" class="view">
+  <div class="shell">
+    <div class="topbar-detail">
+      <button class="btn back" onclick="goList()">&#8592; All clients</button>
+      <button class="btn danger" onclick="deleteClient()">Delete</button>
+    </div>
+
+    <div class="sec-head" style="padding-top:16px">
+      <span class="sec-num">01</span>
+      <div class="sec-inner">
+        <div class="sec-label">Client journey</div>
+        <h2 id="d-sec-title">&#8212;</h2>
+      </div>
+    </div>
+
+    <div class="detail-hero">
+      <div class="detail-av" id="d-av"></div>
+      <div class="detail-info">
+        <div class="detail-name" id="d-name"></div>
+        <div class="detail-meta" id="d-meta"></div>
+      </div>
+    </div>
+
+    <div class="prog-row">
+      <div class="prog-track"><div class="prog-fill" id="d-prog"></div></div>
+      <div class="prog-label" id="d-prog-label"></div>
+      <div class="prog-pct" id="d-prog-pct"></div>
+    </div>
+
+    <div class="journey" id="d-journey"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">No doubts. No Regrets.&#8482;</div>
+  <div class="footer-note">Confidential &middot; Internal use only</div>
+</footer>
+
+<script>
+'use strict';
+const STAGES=[
+  {id:'s1',num:'01',title:'Lead & qualification',tag:'Entry',tc:'tag-consult',checks:['30-min initial call with senior sales consultant','Assessed suitability of client and concept','Decision: suitable for full design process'],fork:[['Not suitable','Redirect to traditional booking'],['Suitable','Progress to intake form']]},
+  {id:'s2',num:'02',title:'Client intake form',tag:'< 1 day',tc:'tag-consult',checks:['Online quiz completed — references, size, placement, subject, meaning','Consultation call auto-scheduled'],fork:[]},
+  {id:'s3',num:'03',title:'In-person consultation',tag:'1 hr · Art Director',tc:'tag-consult',checks:['Rapport built; testimonials presented','Photobooth completed — AI avatar created','Body measurements taken','Personal style and outfit aesthetic established','App induction completed'],fork:[]},
+  {id:'s4',num:'04',title:'Deposit & concept development',tag:'$250 deposit',tc:'tag-money',checks:['$250 deposit received','Artist selected and assigned','Concept developed','Art Director sign-off obtained'],fork:[]},
+  {id:'s5',num:'05',title:'First draft presentation',tag:'30 min · ~3 days',tc:'tag-design',checks:['First draft shown overlaid on placement photo','Amendments discussed and noted','Designer edits completed','Concierge sign-off obtained'],fork:[]},
+  {id:'s6',num:'06',title:'Final design presentation',tag:'30 min video',tc:'tag-design',checks:['Design shown on AI avatar and placement','Presented across different outfit contexts','3 finish options offered — selection made','Temporary tattoo produced for trial'],fork:[['Not ready','Amendments loop — back to Art Director'],['Ready to book','Proceed to full payment']]},
+  {id:'s7',num:'07',title:'Full booking & payment',tag:'$2,250 balance',tc:'tag-money',checks:['Final amendments session completed in app','$2,250 balance collected','Payment plan discussed if applicable','New project interest noted'],fork:[]},
+  {id:'s8',num:'08',title:'Artist intro & sign-off',tag:'10 min · 3-day lead',tc:'tag-final',checks:['Client introduced to artist — max 10 min','Final artist sign-off obtained','Final concierge sign-off obtained'],fork:[]},
+  {id:'s9',num:'09',title:'Tattoo day',tag:'The appointment',tc:'tag-day',checks:['Appointment confirmed','Client attended','Tattoo completed successfully'],fork:[]},
+  {id:'s10',num:'10',title:'Aftercare check-in',tag:'7 days post',tc:'tag-final',checks:['7-day check-in completed','Satisfaction confirmed','Testimonial / referral captured','New project interest explored'],fork:[]},
+];
+
+const AV_STYLES=['gold','teal','','gold','teal',''];
+var clients={}, currentId=null;
+var KEY='nr-concierge-v3';
+
+function makeStages(){
+  var s={};
+  STAGES.forEach(function(st){s[st.id]={checks:st.checks.map(function(){return false;}),open:false,note:''};});
+  return s;
+}
+
+function seedClients(){
+  var now=Date.now();
+  var c1={id:'c1000',name:'Sarah Mitchell',concept:'Botanical sleeve',placement:'Left forearm',date:'2026-01-10',created:now-8*86400000,stages:makeStages()};
+  STAGES.forEach(function(s){c1.stages[s.id].checks=c1.stages[s.id].checks.map(function(){return true;});});
+  c1.stages['s1'].note='Came via Instagram referral. Very clear vision from the start.';
+  c1.stages['s4'].note='Matched with Jade — perfect fit for the botanical style.';
+  c1.stages['s10'].note='Left a glowing Google review. Interested in a matching piece on right arm.';
+  var c2={id:'c1001',name:'Marcus Reid',concept:'Japanese koi dragon',placement:'Full back',date:'2026-02-18',created:now-4*86400000,stages:makeStages()};
+  ['s1','s2','s3','s4','s5'].forEach(function(sid){c2.stages[sid].checks=c2.stages[sid].checks.map(function(){return true;});});
+  c2.stages['s6'].checks=[true,true,false,false];
+  c2.stages['s1'].note='Deep indigo and burnt orange palette — very specific. Logged.';
+  c2.stages['s5'].note='First draft well received. Dragon tail to extend lower toward waist.';
+  c2.stages['s6'].note='Awaiting temporary tattoo. Targeting close by end of week.';
+  var c3={id:'c1002',name:'Priya Nair',concept:'Geometric mandala',placement:'Sternum',date:'2026-03-05',created:now-2*86400000,stages:makeStages()};
+  ['s1','s2'].forEach(function(sid){c3.stages[sid].checks=c3.stages[sid].checks.map(function(){return true;});});
+  c3.stages['s3'].checks=[true,false,false,false,false];
+  c3.stages['s1'].note='Referred by Sarah Mitchell. Booked immediately after the call.';
+  var c4={id:'c1003',name:'Tom Hargreaves',concept:'Minimalist wolf',placement:'Right calf',date:'2026-03-20',created:now-86400000,stages:makeStages()};
+  c4.stages['s1'].checks=[true,false,false];
+  c4.stages['s1'].note='Initial call complete. Concept clear. Intake form sent.';
+  clients={};
+  clients[c1.id]=c1; clients[c2.id]=c2; clients[c3.id]=c3; clients[c4.id]=c4;
+}
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(clients));}catch(e){}}
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){var p=JSON.parse(raw);if(Object.keys(p).length>0){clients=p;renderList();return;}}
+  }catch(e){}
+  seedClients();save();renderList();
+}
+
+function stageProgress(c,sid){
+  var done=c.stages[sid].checks.filter(Boolean).length;
+  var s=STAGES.filter(function(s){return s.id===sid;})[0];
+  return{done:done,total:s.checks.length};
+}
+function clientProgress(c){
+  var done=0,total=0;
+  STAGES.forEach(function(s){var p=stageProgress(c,s.id);done+=p.done;total+=p.total;});
+  return{done:done,total:total,pct:total?Math.round(done/total*100):0};
+}
+function stageComplete(c,sid){var p=stageProgress(c,sid);return p.done===p.total&&p.total>0;}
+function initials(n){return n.trim().split(/\s+/).slice(0,2).map(function(w){return w[0].toUpperCase();}).join('');}
+function avStyle(id){var idx=Object.keys(clients).indexOf(id);return AV_STYLES[(idx<0?0:idx)%AV_STYLES.length];}
+
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showAddForm(){
+  document.getElementById('add-form-wrap').style.display='block';
+  document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
+  // Delay focus slightly on iOS to allow layout settle
+  setTimeout(function(){
+    var el=document.getElementById('inp-name');
+    if(el){el.focus();}
+  },100);
+}
+function hideAddForm(){
+  document.getElementById('add-form-wrap').style.display='none';
+  ['inp-name','inp-concept','inp-placement'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='';
+  });
+}
+function addClient(){
+  var name=document.getElementById('inp-name').value.trim();
+  if(!name){document.getElementById('inp-name').focus();return;}
+  var id='c'+Date.now();
+  clients[id]={
+    id:id,name:name,
+    concept:document.getElementById('inp-concept').value.trim()||'—',
+    placement:document.getElementById('inp-placement').value.trim()||'—',
+    date:document.getElementById('inp-date').value||new Date().toISOString().slice(0,10),
+    created:Date.now(),stages:makeStages()
+  };
+  hideAddForm();save();renderList();openClient(id);
+}
+function deleteClient(){
+  if(!currentId)return;
+  var c=clients[currentId];
+  if(!c)return;
+  if(!confirm('Delete '+c.name+' and all their data?'))return;
+  delete clients[currentId];currentId=null;save();goList();
+}
+function goList(){
+  document.getElementById('view-list').classList.add('active');
+  document.getElementById('view-detail').classList.remove('active');
+  renderList();
+  window.scrollTo(0,0);
+}
+function openClient(id){
+  currentId=id;
+  document.getElementById('view-list').classList.remove('active');
+  document.getElementById('view-detail').classList.add('active');
+  renderDetail();
+  window.scrollTo(0,0);
+}
+
+function renderList(){
+  var all=Object.values(clients).sort(function(a,b){return b.created-a.created;});
+  var active=all.filter(function(c){return clientProgress(c).pct<100;});
+  var done=all.filter(function(c){return clientProgress(c).pct===100;});
+  document.getElementById('ls-total').textContent=all.length;
+  document.getElementById('ls-active').textContent=active.length;
+  document.getElementById('ls-complete').textContent=done.length;
+
+  function rowHtml(c){
+    var p=clientProgress(c);var ac=avStyle(c.id);
+    var isComplete=p.pct===100;
+    var stagesDone=STAGES.filter(function(s){return stageComplete(c,s.id);}).length;
+    var pillTxt=isComplete?'&#10022; Complete':stagesDone>0?'Stage '+(stagesDone+1)+' of 10':'New';
+    var pillCls=isComplete?'pill teal':stagesDone>0?'pill gold':'pill';
+    return '<div class="client-row" onclick="openClient(\''+c.id+'\')">'+
+      '<div class="av '+ac+'">'+esc(initials(c.name))+'</div>'+
+      '<div class="cl-info">'+
+        '<div class="cl-name">'+esc(c.name)+'</div>'+
+        '<div class="cl-meta">'+esc(c.concept)+' &middot; '+esc(c.placement)+'</div>'+
+      '</div>'+
+      '<div class="cl-right">'+
+        '<span class="'+pillCls+'">'+pillTxt+'</span>'+
+        '<div class="mini-prog-wrap">'+
+          '<div class="mini-prog-pct">'+p.pct+'%</div>'+
+          '<div class="mini-bar"><div class="mini-bar-fill" style="width:'+p.pct+'%"></div></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  var aEl=document.getElementById('active-list');
+  var dEl=document.getElementById('done-list');
+  if(all.length===0){
+    aEl.innerHTML='<div class="empty"><strong>No clients yet.</strong>Add your first client to begin.</div>';
+    dEl.innerHTML='';return;
+  }
+  aEl.innerHTML=active.length?'<div class="list-sep">In progress &mdash; '+active.length+'</div><div class="client-list">'+active.map(rowHtml).join('')+'</div>':'';
+  dEl.innerHTML=done.length?'<div class="list-sep" style="margin-top:24px">Completed &mdash; '+done.length+'</div><div class="client-list">'+done.map(rowHtml).join('')+'</div>':'';
+}
+
+function renderDetail(){
+  var c=clients[currentId];if(!c)return;
+  var ac=avStyle(c.id);var p=clientProgress(c);
+  document.getElementById('d-sec-title').textContent=c.name+'.';
+  var av=document.getElementById('d-av');
+  av.className='detail-av'+(ac?' '+ac:'');av.textContent=initials(c.name);
+  document.getElementById('d-name').textContent=c.name;
+  document.getElementById('d-meta').innerHTML=esc(c.concept)+'<span>&middot;</span>'+esc(c.placement)+'<span>&middot;</span>Since '+esc(c.date);
+  document.getElementById('d-prog').style.width=p.pct+'%';
+  document.getElementById('d-prog-label').textContent=p.pct===100?'Journey complete':p.done+' of '+p.total+' tasks';
+  document.getElementById('d-prog-pct').textContent=p.pct+'%';
+
+  document.getElementById('d-journey').innerHTML=STAGES.map(function(s,i){
+    var st=c.stages[s.id];
+    var isLast=i===STAGES.length-1;
+    var allDone=stageComplete(c,s.id);
+    var prevDone=i===0||stageComplete(c,STAGES[i-1].id);
+    var dc=st.checks.filter(Boolean).length;
+
+    var checksHtml=s.checks.map(function(label,ci){
+      return '<li class="check-item '+(st.checks[ci]?'checked':'')+'">' +
+        '<input type="checkbox" id="chk-'+s.id+'-'+ci+'" '+(st.checks[ci]?'checked':'')+
+        ' onchange="toggleCheck(\''+s.id+'\','+ci+',this.checked)">' +
+        '<label for="chk-'+s.id+'-'+ci+'">'+esc(label)+'</label>' +
+        '</li>';
+    }).join('');
+
+    var forkHtml=s.fork.length?
+      '<div class="fork-row">'+s.fork.map(function(f){
+        return '<div class="fork-item"><div class="fork-lbl">'+esc(f[0])+'</div><div class="fork-desc">'+esc(f[1])+'</div></div>';
+      }).join('')+'</div>':'';
+
+    return '<div class="s-block">'+
+      '<div class="s-spine">'+
+        '<div class="s-dot '+(allDone?'done':prevDone?'current':'')+'" onclick="toggleStage(\''+s.id+'\')">'+
+          (allDone?'&#10022;':s.num)+
+        '</div>'+
+        (!isLast?'<div class="s-line '+(allDone?'done':'')+'" data-line="'+s.id+'"></div>':'')+
+      '</div>'+
+      '<div class="s-card '+(allDone?'done':prevDone?'current':'')+'" data-card="'+s.id+'">'+
+        '<div class="s-header" onclick="toggleStage(\''+s.id+'\')">'+
+          '<div class="s-meta">'+
+            '<div class="s-num">Stage '+s.num+' &mdash; '+dc+'/'+s.checks.length+' tasks</div>'+
+            '<div class="s-title">'+esc(s.title)+'</div>'+
+          '</div>'+
+          '<span class="s-tag '+s.tc+'">'+esc(s.tag)+'</span>'+
+          '<span class="chev '+(st.open?'open':'')+'" data-chev="'+s.id+'">&#9654;</span>'+
+        '</div>'+
+        '<div class="s-body '+(st.open?'open':'')+'" data-body="'+s.id+'">'+
+          '<ul class="check-list">'+checksHtml+'</ul>'+
+          forkHtml+
+          '<div class="notes-lbl"><span>Notes</span><span class="saved-flash" data-saved="'+s.id+'">Saved.</span></div>'+
+          '<textarea placeholder="Add notes for this stage..." oninput="saveNote(\''+s.id+'\',this.value)">'+esc(st.note)+'</textarea>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleStage(sid){
+  var c=clients[currentId];
+  c.stages[sid].open=!c.stages[sid].open;
+  var body=document.querySelector('[data-body="'+sid+'"]');
+  var chev=document.querySelector('[data-chev="'+sid+'"]');
+  if(body)body.classList.toggle('open',c.stages[sid].open);
+  if(chev)chev.classList.toggle('open',c.stages[sid].open);
+  save();
+}
+
+function toggleCheck(sid,ci,val){
+  var c=clients[currentId];
+  c.stages[sid].checks[ci]=val;
+  save();
+  var item=document.getElementById('chk-'+sid+'-'+ci);
+  if(item){var li=item.parentNode;if(li)li.classList.toggle('checked',val);}
+  refreshStageUI(sid);
+  refreshProgress();
+}
+
+function refreshStageUI(sid){
+  var c=clients[currentId];
+  var s=STAGES.filter(function(x){return x.id===sid;})[0];
+  var dc=c.stages[sid].checks.filter(Boolean).length;
+  var allDone=dc===s.checks.length;
+  var idx=STAGES.findIndex(function(x){return x.id===sid;});
+  var prevDone=idx===0||stageComplete(c,STAGES[idx-1].id);
+
+  var body=document.querySelector('[data-body="'+sid+'"]');
+  if(body){
+    var card=body.closest('.s-card');
+    if(card){
+      var numEl=card.querySelector('.s-num');
+      if(numEl)numEl.textContent='Stage '+s.num+' \u2014 '+dc+'/'+s.checks.length+' tasks';
+      card.className='s-card'+(allDone?' done':prevDone?' current':'');
+    }
+  }
+  var dot=document.querySelector('.s-dot[onclick="toggleStage(\''+sid+'\')"]');
+  if(dot){
+    dot.className='s-dot'+(allDone?' done':prevDone?' current':'');
+    dot.innerHTML=allDone?'&#10022;':s.num;
+  }
+  var line=document.querySelector('[data-line="'+sid+'"]');
+  if(line)line.className='s-line'+(allDone?' done':'');
+
+  for(var i=idx+1;i<STAGES.length;i++){
+    var sx=STAGES[i];
+    var isD=stageComplete(c,sx.id);
+    var pD=stageComplete(c,STAGES[i-1].id);
+    var dx=document.querySelector('.s-dot[onclick="toggleStage(\''+sx.id+'\')"]');
+    if(dx)dx.className='s-dot'+(isD?' done':pD?' current':'');
+    var cdx=document.querySelector('[data-card="'+sx.id+'"]');
+    if(cdx)cdx.className='s-card'+(isD?' done':pD?' current':'');
+    var lx=document.querySelector('[data-line="'+sx.id+'"]');
+    if(lx)lx.className='s-line'+(isD?' done':'');
+  }
+}
+
+function refreshProgress(){
+  var c=clients[currentId];var p=clientProgress(c);
+  document.getElementById('d-prog').style.width=p.pct+'%';
+  document.getElementById('d-prog-label').textContent=p.pct===100?'Journey complete':p.done+' of '+p.total+' tasks';
+  document.getElementById('d-prog-pct').textContent=p.pct+'%';
+}
+
+function saveNote(sid,val){
+  clients[currentId].stages[sid].note=val;
+  save();
+  var f=document.querySelector('[data-saved="'+sid+'"]');
+  if(f){f.classList.add('show');setTimeout(function(){f.classList.remove('show');},1800);}
+}
+
+load();
+</script>
+</body>
+</html>
